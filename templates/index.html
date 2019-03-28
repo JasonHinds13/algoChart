@@ -1,0 +1,54 @@
+<html>
+<head>
+	<title>Algorithms</title>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
+	<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+	<div style="max-height:500px; max-width:500px">
+		<canvas id="myChart"></canvas>
+	</div>
+
+	<script>
+		var results;
+		var labs = [];
+		var vals = [];
+
+		$.get( "/api/algoData", function(data) {
+			results = data;
+			for(var i=0; i < results["Bubble Sort"].length; i++){
+				labs.push(results["Bubble Sort"][i][0]);
+				vals.push(results["Bubble Sort"][i][1]);
+			}
+
+			var ctx = document.getElementById('myChart');
+			var myLineChart = new Chart(ctx, {
+			    type: 'line',
+			    data: {
+			    	labels: labs,
+			    	datasets: [{
+			    		label: "Bubble Sort",
+			    		backgroundColor: '#ff0000',
+			    		borderColor: '#ff0000',
+			    		data: vals,
+			    		fill: false
+			    	}]
+			    },
+			    options: {
+				    responsive: true,
+				    maintainAspectRatio: false,
+				    scales: {
+				        yAxes: [{
+				            ticks: {
+				                beginAtZero:true
+				            }
+				        }]
+				    }
+				}
+			});
+		});
+	</script>
+</body>
+</html>
