@@ -7,47 +7,59 @@
 
 <body>
 
-	<div style="max-height:500px; max-width:500px">
-		<canvas id="myChart"></canvas>
-	</div>
-
 	<script>
 		var results;
-		var labs = [];
-		var vals = [];
 
 		$.get( "/api/algoData", function(data) {
 			results = data;
-			for(var i=0; i < results["Bubble Sort"].length; i++){
-				labs.push(results["Bubble Sort"][i][0]);
-				vals.push(results["Bubble Sort"][i][1]);
-			}
 
-			var ctx = document.getElementById('myChart');
-			var myLineChart = new Chart(ctx, {
-			    type: 'line',
-			    data: {
-			    	labels: labs,
-			    	datasets: [{
-			    		label: "Bubble Sort",
-			    		backgroundColor: '#ff0000',
-			    		borderColor: '#ff0000',
-			    		data: vals,
-			    		fill: false
-			    	}]
-			    },
-			    options: {
-				    responsive: true,
-				    maintainAspectRatio: false,
-				    scales: {
-				        yAxes: [{
-				            ticks: {
-				                beginAtZero:true
-				            }
-				        }]
-				    }
+			var chartIndex = 0;
+
+			for(k in results){
+				var labs = [];
+				var vals = [];
+
+				for(var i=0; i < results[k].length; i++){
+					labs.push(results[k][i][0]);
+					vals.push(results[k][i][1]);
 				}
-			});
+
+				$("body").append('<canvas id="myChart'+ chartIndex +'" height="300px" width="300px"></canvas>');
+				var ctx = document.getElementById('myChart'+chartIndex);
+				chartIndex = chartIndex + 1;
+				var myLineChart = new Chart(ctx, {
+				    type: 'line',
+				    data: {
+				    	labels: labs,
+				    	datasets: [{
+				    		label: k,
+				    		backgroundColor: '#ff0000',
+				    		borderColor: '#ff0000',
+				    		data: vals,
+				    		fill: false,
+								borderWidth: 1
+				    	}]
+				    },
+				    options: {
+					    responsive: false,
+					    maintainAspectRatio: false,
+					    scales: {
+					        yAxes: [{
+					            ticks: {
+					                beginAtZero:false
+					            }
+					        }]
+					    },
+							color: [
+						    'red',
+						    'blue',
+						    'green',
+								'yellow',
+						    'black',
+						]
+					}
+				});
+			}
 		});
 	</script>
 </body>
