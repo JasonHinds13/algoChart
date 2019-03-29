@@ -7,3 +7,26 @@
 .loader{
 	font-style: italic;
 }
+
+.select{
+	display: inline;
+	margin: 1px;
+}
+
+.selectText{
+	display: inline;
+	font-size: 14px;
+	margin: 5px;
+}
+
+#comparison{
+	width: 50%;
+	margin: auto;
+}
+
+#title{
+	color: grey;
+	margin: 10px;
+	font-size: 18px;
+	text-align: center;
+}
