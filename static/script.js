@@ -1,4 +1,5 @@
 var results;
+var newlabel = [];
 var colors = ['#ff0000','#800080','#ff6347','#ffff00','#00ff00','#0000ff'];
 
 $(document).ready(function(){
@@ -16,6 +17,8 @@ $(document).ready(function(){
 				labs.push(results[k][i][0]);
 				vals.push(results[k][i][1]);
 			}
+
+			newlabel = labs;
 
 			$(".wrapper").append('<canvas id="myChart'+ chartIndex +'" height="300px" width="300px"></canvas>');
 			$(".compare").append('<input type="checkbox" class="select" value="'+ k +'"/><p class="selectText">'+k+'</p>');
@@ -71,20 +74,51 @@ $(document).ready(function(){
 		}
 	});
 
+	// Comparison Chart
+	var ctx = document.getElementById('compChart');
+	var conf = {
+	    type: 'line',
+	    data: {
+	    	labels: newlabel
+	    },
+	    options: {
+		    responsive: false,
+		    maintainAspectRatio: false,
+		    title: {
+				display: true,
+				text: 'Comparison of Performace'
+			},
+		    scales: {
+		    	xAxes: [{
+					display: true,
+					scaleLabel: {
+						display: true,
+						labelString: '# of elements (n)'
+					}
+				}],
+		        yAxes: [{
+		        	scaleLabel:{
+		        		display: true,
+		        		labelString: 'Time'
+		        	},
+		            ticks: {
+		                beginAtZero:false
+		            }
+		        }]
+		    }
+		}
+	};
+	var myLineChart = new Chart(ctx, conf);
+
 	$("#compButton").click(function(){
-		var selected = [];
-		var newlabel = [];
+		conf.data.datasets = [];
 
 		$(".select:checked").each(function(ind, val){
 			var vals = [];
-			var labs = [];
 
 			for(var i=0; i < results[val.value].length; i++){
-				labs.push(results[val.value][i][0]);
 				vals.push(results[val.value][i][1]);
 			}
-
-			newlabel = labs;
 
 			obj = {
 				label: val.value,
@@ -95,42 +129,9 @@ $(document).ready(function(){
 				borderWidth: 1
 		    }
 
-		    selected.push(obj);
+		    conf.data.datasets.push(obj);
 		});
-
-		var ctx = document.getElementById('compChart');
-		var myLineChart = new Chart(ctx, {
-		    type: 'line',
-		    data: {
-		    	labels: newlabel,
-		    	datasets: selected
-		    },
-		    options: {
-			    responsive: false,
-			    maintainAspectRatio: false,
-			    title: {
-					display: true,
-					text: 'Comparison of Performace'
-				},
-			    scales: {
-			    	xAxes: [{
-						display: true,
-						scaleLabel: {
-							display: true,
-							labelString: '# of elements (n)'
-						}
-					}],
-			        yAxes: [{
-			        	scaleLabel:{
-			        		display: true,
-			        		labelString: 'Time'
-			        	},
-			            ticks: {
-			                beginAtZero:false
-			            }
-			        }]
-			    }
-			}
-		});
+		conf.data.labels = newlabel;
+		myLineChart.update();
 	});
 });
