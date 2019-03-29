@@ -1,66 +1,15 @@
 <html>
 <head>
 	<title>Algorithms</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
 	<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='script.js') }}"></script>
 </head>
 
 <body>
-
-	<script>
-		var results;
-
-		$.get( "/api/algoData", function(data) {
-			results = data;
-
-			var chartIndex = 0;
-
-			for(k in results){
-				var labs = [];
-				var vals = [];
-
-				for(var i=0; i < results[k].length; i++){
-					labs.push(results[k][i][0]);
-					vals.push(results[k][i][1]);
-				}
-
-				$("body").append('<canvas id="myChart'+ chartIndex +'" height="300px" width="300px"></canvas>');
-				var ctx = document.getElementById('myChart'+chartIndex);
-				chartIndex = chartIndex + 1;
-				var myLineChart = new Chart(ctx, {
-				    type: 'line',
-				    data: {
-				    	labels: labs,
-				    	datasets: [{
-				    		label: k,
-				    		backgroundColor: '#ff0000',
-				    		borderColor: '#ff0000',
-				    		data: vals,
-				    		fill: false,
-								borderWidth: 1
-				    	}]
-				    },
-				    options: {
-					    responsive: false,
-					    maintainAspectRatio: false,
-					    scales: {
-					        yAxes: [{
-					            ticks: {
-					                beginAtZero:false
-					            }
-					        }]
-					    },
-							color: [
-						    'red',
-						    'blue',
-						    'green',
-								'yellow',
-						    'black',
-						]
-					}
-				});
-			}
-		});
-	</script>
+	<div class="loader">Running Algorithms ...</div>
+	<div class="wrapper">
+	</div>
 </body>
 </html>
