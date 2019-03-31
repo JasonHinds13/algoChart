@@ -1,9 +1,13 @@
+import sys
 import time
 import random
 
+sys.setrecursionlimit(1000)
+
 mi = 0
 ma = 10
-N = [10,50,100,500,1000,5000,10000]
+#N = [10,50,100,500,1000,5000,10000]
+N = [1000,2000,3000,4000,5000,7000,9000,10000]
 
 # Will hold the lists of numbers to run algorithms on
 # e.g. lis = [[1,2,3,...], [4,7,3,...], ...]
@@ -50,7 +54,7 @@ def insertion_sort(ar, simulation=False):
             pos = pos - 1
         # Break and do the final swap
         arr[pos] = cursor
-        return arr
+    return arr
 
 ## Merge Sort functions
 def merge_sort(ar):
@@ -84,34 +88,56 @@ def merge(left, right, merged):
     return merged
 
 ## Quick Sort functions
-def partition(array, begin, end):
-    pivot_idx = begin
-    for i in xrange(begin+1, end+1):
-        if array[i] <= array[begin]:
-            pivot_idx += 1
-            array[i], array[pivot_idx] = array[pivot_idx], array[i]
-    array[pivot_idx], array[begin] = array[begin], array[pivot_idx]
-    return pivot_idx
+def partition(arr,l,h): 
+    i = ( l - 1 ) 
+    x = arr[h] 
+  
+    for j in range(l , h): 
+        if   arr[j] <= x: 
+  
+            # increment index of smaller element 
+            i = i+1
+            arr[i],arr[j] = arr[j],arr[i] 
+  
+    arr[i+1],arr[h] = arr[h],arr[i+1] 
+    return (i+1) 
 
-def quick_sort_recursion(array, begin, end):
-    if begin >= end:
-        return
-    pivot_idx = partition(array, begin, end)
-    quick_sort_recursion(array, begin, pivot_idx-1)
-    quick_sort_recursion(array, pivot_idx+1, end)
-
-def quick_sort(arr, begin=0, end=None):
-    array = arr[:]
-    if end is None:
-        end = len(array) - 1
-    return quick_sort_recursion(array, begin, end)
+def quickSort(ar,l=0,h=None):
+    arr = ar[:]
+    if h == None:
+        h = len(arr)-1
+    size = h - l + 1
+    stack = [0] * (size)
+    top = -1
+    top = top + 1
+    stack[top] = l 
+    top = top + 1
+    stack[top] = h
+    while top >= 0:
+        h = stack[top] 
+        top = top - 1
+        l = stack[top] 
+        top = top - 1
+        p = partition( arr, l, h )
+        if p-1 > l: 
+            top = top + 1
+            stack[top] = l 
+            top = top + 1
+            stack[top] = p - 1
+        if p+1 < h: 
+            top = top + 1
+            stack[top] = p + 1
+            top = top + 1
+            stack[top] = h 
+    return arr
 
 # Run an algorithm with each list we've created and store the results
 def algo(name, f):
+    print("Running: " +name)
     results[name] = []
     for l in lis:
         start = time.time()
-        f(l)
+        f(l[:])
         stop = time.time()
         results[name].append((len(l), stop - start))
 
@@ -121,7 +147,7 @@ def runAlgorithms():
     algo("Selection Sort", selectionSort)
     algo("Insertion Sort", insertion_sort)
     algo("Merge Sort", merge_sort)
-    algo("Quick Sort", quick_sort)
+    algo("Quick Sort", quickSort)
     return results
 
 #print runAlgorithms()

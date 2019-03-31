@@ -54,7 +54,7 @@ $(document).ready(function(){
 				        yAxes: [{
 				        	scaleLabel:{
 				        		display: true,
-				        		labelString: 'Time'
+				        		labelString: 'Time (t)'
 				        	},
 				            ticks: {
 				                beginAtZero:false
@@ -99,7 +99,7 @@ $(document).ready(function(){
 		        yAxes: [{
 		        	scaleLabel:{
 		        		display: true,
-		        		labelString: 'Time'
+		        		labelString: 'Time (t)'
 		        	},
 		            ticks: {
 		                beginAtZero:false
